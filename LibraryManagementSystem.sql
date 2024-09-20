@@ -1,8 +1,7 @@
-# Create a Database called 'Library' 
+
 CREATE DATABASE library;
 USE library;
 
-# create table "Branch"
 CREATE TABLE Branch
 (
 Branch_no VARCHAR(10) PRIMARY KEY,
@@ -12,7 +11,6 @@ Contact_no VARCHAR(15)
 );
 DESC branch;
 
-# Create table "Employee"
 CREATE TABLE Employee
 (
 Emp_id VARCHAR(10) PRIMARY KEY,
@@ -22,7 +20,6 @@ Salary DECIMAL(10,2)
 );
 DESC employee;
 
-# Create table "Customer"
 CREATE TABLE Customer
 (
 Customer_Id VARCHAR(10) PRIMARY KEY,
@@ -32,7 +29,6 @@ Reg_date DATE
 );
 DESC customer;
 
-# Create table "IssueStatus"
 CREATE TABLE IssueStatus
 (
 Issue_Id VARCHAR(10) PRIMARY KEY,
@@ -47,7 +43,6 @@ DESC issuestatus;
 ALTER TABLE issuestatus MODIFY COLUMN Issued_book_name VARCHAR(80);
 ALTER TABLE issuestatus MODIFY COLUMN Isbn_book VARCHAR(25);
 
-# Create table "ReturnStatus"
 CREATE TABLE ReturnStatus
 (
 Return_id VARCHAR(10) PRIMARY KEY,
@@ -61,7 +56,6 @@ DESC returnstatus;
 ALTER TABLE returnstatus MODIFY COLUMN Return_book_name VARCHAR(80);
 ALTER TABLE returnstatus MODIFY COLUMN isbn_book2 VARCHAR(25);
 
-# Create table "Books"
 CREATE TABLE Books
 (
 ISBN VARCHAR(10) PRIMARY KEY,
@@ -78,7 +72,6 @@ alter TABLE books MODIFY COLUMN Book_title VARCHAR(80);
 
 SHOW TABLES;
 
-# Insert values into each tables
 INSERT INTO branch VALUES
 ('B001', 'M101', '123 Main St', '+919099988676'),
 ('B002', 'M102', '456 Elm St', '+919099988677'),
@@ -155,27 +148,20 @@ SELECT * FROM returnstatus;
 
 /*Queries*/
 
-# 1. Retrieve the book title, category, and rental price of all available books.
 SELECT book_title, category, rental_price FROM books WHERE Status = 'Yes';
 
-# 2. List the employee names and their respective salaries in descending order of salary.
 SELECT emp_name, salary FROM employee ORDER BY Salary DESC;
 
-# 3. Retrieve the book titles and the corresponding customers who have issued those books.
 SELECT issuestatus.Issued_book_name, customer.Customer_name FROM issuestatus INNER JOIN
 customer on issuestatus.Issued_cust = customer.Customer_Id;
 
-# 4. Display the total count of books in each category.
 SELECT Category, COUNT(Book_title) FROM books GROUP BY Category;
 
-# 5. Retrieve the employee names and their positions for the employees whose salaries are above Rs.50,000.
 SELECT emp_name, position FROM employee WHERE Salary > 50000;
 
-# 6. List the customer names who registered before 2022-01-01 and have not issued any books yet.
 SELECT customer_name FROM customer WHERE Reg_date < '2022-01-01' AND Customer_Id NOT IN
 (SELECT issued_cust FROM issuestatus);
 
-# 7. Display the branch numbers and the total count of employees in each branch.
 ALTER TABLE employee ADD COLUMN branch_no VARCHAR(10);
 ALTER TABLE employee ADD CONSTRAINT FOREIGN KEY (branch_no)
 REFERENCES branch(branch_no);
@@ -197,18 +183,14 @@ SELECT * FROM employee;
 
 SELECT branch_no, COUNT(emp_id) FROM employee GROUP BY branch_no;
 
-# 8. Display the names of customers who have issued books in the month of June 2023.
 SELECT customer.Customer_name FROM customer INNER JOIN issuestatus ON 
 customer.Customer_Id = issuestatus.Issued_cust WHERE issuestatus.Issue_date >= '2023-06-01' AND 
 issuestatus.Issue_date <= '2023-06-30';
 
-# 9. Retrieve book_title from book table containing 'history'.
 SELECT book_title FROM books WHERE Category = 'history';
 
-# 10.Retrieve the branch numbers along with the count of employees for branches having more than 5 employees.
 SELECT branch_no, COUNT(emp_id) FROM employee GROUP BY branch_no HAVING COUNT(Emp_id) > 5;
 
 
-# End
 
 
